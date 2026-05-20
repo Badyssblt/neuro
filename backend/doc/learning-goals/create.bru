@@ -1,0 +1,29 @@
+meta {
+  name: Create Learning Goal
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/learning_goals
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/ld+json
+}
+
+body:json {
+  {
+    "title": "Maîtriser TypeScript",
+    "description": "Apprendre TypeScript de zéro à avancé",
+    "level": "beginner",
+    "status": "active"
+  }
+}

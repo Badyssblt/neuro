@@ -1,0 +1,31 @@
+meta {
+  name: Update Lesson (PUT)
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/api/lessons/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/ld+json
+}
+
+body:json {
+  {
+    "title": "Déclarer des variables typées",
+    "content": "En TypeScript, on peut typer explicitement ses variables avec la syntaxe `let x: string = 'hello'`.",
+    "summary": "Typage explicite des variables avec let, const et var.",
+    "examples": "let age: number = 25;\nconst name: string = 'Alice';",
+    "difficulty": "intermediate",
+    "concept": "/api/concepts/1"
+  }
+}

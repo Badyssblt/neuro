@@ -1,0 +1,31 @@
+meta {
+  name: Update Concept (PUT)
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/api/concepts/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/ld+json
+}
+
+body:json {
+  {
+    "title": "Les types primitifs",
+    "description": "string, number, boolean, null, undefined en TypeScript",
+    "difficulty": "intermediate",
+    "importance_score": 10,
+    "estimated_time": 45,
+    "module": "/api/modules/1"
+  }
+}

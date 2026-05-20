@@ -1,0 +1,29 @@
+meta {
+  name: Update Learning Goal (PUT)
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/api/learning_goals/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/ld+json
+}
+
+body:json {
+  {
+    "title": "Maîtriser TypeScript",
+    "description": "Apprendre TypeScript de zéro à avancé",
+    "level": "intermediate",
+    "status": "active"
+  }
+}

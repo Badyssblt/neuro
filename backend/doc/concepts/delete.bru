@@ -1,0 +1,15 @@
+meta {
+  name: Delete Concept
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{baseUrl}}/api/concepts/1
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

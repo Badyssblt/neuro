@@ -1,0 +1,19 @@
+meta {
+  name: List Concepts
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/concepts
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  Accept: application/ld+json
+}

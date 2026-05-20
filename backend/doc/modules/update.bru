@@ -1,0 +1,31 @@
+meta {
+  name: Update Module (PUT)
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/api/modules/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/ld+json
+}
+
+body:json {
+  {
+    "title": "Introduction à TypeScript",
+    "description": "Les bases de TypeScript : types, interfaces, classes",
+    "position": 1,
+    "difficulty": "intermediate",
+    "estimated_duration": "3h",
+    "learningPath": "/api/learning_paths/1"
+  }
+}

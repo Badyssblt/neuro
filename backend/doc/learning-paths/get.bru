@@ -1,0 +1,19 @@
+meta {
+  name: Get Learning Path
+  type: http
+  seq: 2
+}
+
+get {
+  url: {{baseUrl}}/api/learning_paths/1
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  Accept: application/ld+json
+}

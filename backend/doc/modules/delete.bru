@@ -1,0 +1,15 @@
+meta {
+  name: Delete Module
+  type: http
+  seq: 6
+}
+
+delete {
+  url: {{baseUrl}}/api/modules/1
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}

@@ -1,0 +1,29 @@
+meta {
+  name: Update Learning Path (PUT)
+  type: http
+  seq: 4
+}
+
+put {
+  url: {{baseUrl}}/api/learning_paths/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/ld+json
+}
+
+body:json {
+  {
+    "title": "Parcours TypeScript avancé",
+    "description": "Un parcours complet pour maîtriser TypeScript",
+    "estimated_duration": 7200,
+    "goal": "/api/learning_goals/1"
+  }
+}

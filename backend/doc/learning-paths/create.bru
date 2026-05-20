@@ -1,0 +1,29 @@
+meta {
+  name: Create Learning Path
+  type: http
+  seq: 3
+}
+
+post {
+  url: {{baseUrl}}/api/learning_paths
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  Content-Type: application/json
+  Accept: application/ld+json
+}
+
+body:json {
+  {
+    "title": "Parcours TypeScript avancé",
+    "description": "Un parcours complet pour maîtriser TypeScript",
+    "estimated_duration": 3600,
+    "goal": "/api/learning_goals/1"
+  }
+}

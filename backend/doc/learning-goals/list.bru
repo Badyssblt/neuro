@@ -1,0 +1,19 @@
+meta {
+  name: List Learning Goals
+  type: http
+  seq: 1
+}
+
+get {
+  url: {{baseUrl}}/api/learning_goals
+  body: none
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  Accept: application/ld+json
+}

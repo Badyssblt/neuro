@@ -1,0 +1,27 @@
+meta {
+  name: Patch Module
+  type: http
+  seq: 5
+}
+
+patch {
+  url: {{baseUrl}}/api/modules/1
+  body: json
+  auth: bearer
+}
+
+auth:bearer {
+  token: {{token}}
+}
+
+headers {
+  Content-Type: application/merge-patch+json
+  Accept: application/ld+json
+}
+
+body:json {
+  {
+    "position": 2,
+    "difficulty": "advanced"
+  }
+}
