@@ -1,2 +1,4 @@
 nodes_modules/
 vendor/
+backend/.env
+.git.broken/

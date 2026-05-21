@@ -40,6 +40,9 @@ class LearningPath
     #[ORM\OneToMany(targetEntity: Modules::class, mappedBy: 'learningPath', orphanRemoval: true)]
     private Collection $modules;
 
+    #[ORM\Column]
+    private ?bool $completed = null;
+
     public function __construct()
     {
         $this->modules = new ArrayCollection();
@@ -112,6 +115,18 @@ class LearningPath
                 $module->setLearningPath(null);
             }
         }
+
+        return $this;
+    }
+
+    public function isCompleted(): ?bool
+    {
+        return $this->completed;
+    }
+
+    public function setCompleted(bool $completed): static
+    {
+        $this->completed = $completed;
 
         return $this;
     }

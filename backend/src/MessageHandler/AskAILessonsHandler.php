@@ -16,6 +16,6 @@ class AskAILessonsHandler {
 
     public function __invoke(AskAILessonsMessage $message)
     {
-        dump($this->openAIService->ask($message->getQuestion()));
+       return $this->openAIService->ask($message->getQuestion());
     }
 }
