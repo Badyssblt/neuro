@@ -34,6 +34,8 @@ export const useAuth = () => {
     const result = await authService.login(email, password)
     if (result.error) return result
     token.value = result.data?.token ?? null
+    console.log(token.value);
+    
     await fetchMe()
     return result
   }

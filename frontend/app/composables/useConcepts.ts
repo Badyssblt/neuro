@@ -4,8 +4,8 @@ const LIST_KEY = (page: number) => `concepts:${page}`
 const ITEM_KEY = (id: string) => `concept:${id}`
 
 export const useConcepts = () => {
-  const list = (page: MaybeRefOrGetter<number> = 1) =>
-    useAsyncData(
+  const list = async (page: MaybeRefOrGetter<number> = 1) => {
+    const { data } = await useAsyncData(
       () => LIST_KEY(toValue(page)),
       async () => {
         const { data, error } = await conceptsService.list(toValue(page))
@@ -14,9 +14,11 @@ export const useConcepts = () => {
       },
       { watch: [() => toValue(page)] },
     )
+    return data
+  }
 
-  const one = (id: MaybeRefOrGetter<string>) =>
-    useAsyncData(
+  const one = async (id: MaybeRefOrGetter<string>) => {
+    const { data } = await useAsyncData(
       () => ITEM_KEY(toValue(id)),
       async () => {
         const { data, error } = await conceptsService.get(toValue(id))
@@ -25,6 +27,8 @@ export const useConcepts = () => {
       },
       { watch: [() => toValue(id)] },
     )
+    return data
+  }
 
   const refreshList = (page = 1) => refreshNuxtData(LIST_KEY(page))
   const refreshOne = (id: string) => refreshNuxtData(ITEM_KEY(id))

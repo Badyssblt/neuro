@@ -3,15 +3,13 @@ import type { paths } from './api-schema'
 
 const PUBLIC_AUTH_PATHS = ['/api/login', '/api/register']
 
-let client: ReturnType<typeof createClient<paths>> | null = null
-
 export const useApi = () => {
-  if (client) return client
-
   const config = useRuntimeConfig()
   const baseUrl = (import.meta.server ? config.apiBase : config.public.apiBase) as string
+  const token = useCookie<string | null>('auth_token')
+  const user = useState<unknown | null>('auth:user')
 
-  client = createClient<paths>({
+  const client = createClient<paths>({
     baseUrl,
     headers: {
       Accept: 'application/json',
@@ -21,8 +19,7 @@ export const useApi = () => {
 
   client.use({
     onRequest({ request }) {
-      const token = useCookie<string | null>('auth_token').value
-      if (token) request.headers.set('Authorization', `Bearer ${token}`)
+      if (token.value) request.headers.set('Authorization', `Bearer ${token.value}`)
       return request
     },
     onResponse({ request, response }) {
@@ -33,8 +30,6 @@ export const useApi = () => {
         return response
       }
 
-      const token = useCookie<string | null>('auth_token')
-      const user = useState<unknown | null>('auth:user')
       token.value = null
       user.value = null
 
@@ -47,3 +42,4 @@ export const useApi = () => {
 
   return client
 }
+

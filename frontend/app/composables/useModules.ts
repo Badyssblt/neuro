@@ -4,8 +4,8 @@ const LIST_KEY = (page: number) => `modules:${page}`
 const ITEM_KEY = (id: string) => `module:${id}`
 
 export const useModules = () => {
-  const list = (page: MaybeRefOrGetter<number> = 1) =>
-    useAsyncData(
+  const list = async (page: MaybeRefOrGetter<number> = 1) => {
+    const { data } = await useAsyncData(
       () => LIST_KEY(toValue(page)),
       async () => {
         const { data, error } = await modulesService.list(toValue(page))
@@ -14,9 +14,11 @@ export const useModules = () => {
       },
       { watch: [() => toValue(page)] },
     )
+    return data
+  }
 
-  const one = (id: MaybeRefOrGetter<string>) =>
-    useAsyncData(
+  const one = async (id: MaybeRefOrGetter<string>) => {
+    const { data } = await useAsyncData(
       () => ITEM_KEY(toValue(id)),
       async () => {
         const { data, error } = await modulesService.get(toValue(id))
@@ -25,6 +27,8 @@ export const useModules = () => {
       },
       { watch: [() => toValue(id)] },
     )
+    return data
+  }
 
   const refreshList = (page = 1) => refreshNuxtData(LIST_KEY(page))
   const refreshOne = (id: string) => refreshNuxtData(ITEM_KEY(id))

@@ -1,5 +1,5 @@
 <template>
-    <div>
+    <div class="bg-card rounded-md border border-foreground/30 p-4">
         <div>
 
         </div>
