@@ -1,10 +1,16 @@
-<?php 
+<?php
+
 namespace App\Traits;
+
 use Doctrine\ORM\Mapping as ORM;
-trait UpdatedAtTrait {
+use Symfony\Component\Serializer\Attribute\Groups;
+
+trait UpdatedAtTrait
+{
     #[ORM\Column]
     private ?\DateTimeImmutable $updated_at = null;
 
+    #[Groups(['common'])]
     public function getUpdatedAt(): ?\DateTimeImmutable
     {
         return $this->updated_at;
@@ -16,5 +22,4 @@ trait UpdatedAtTrait {
 
         return $this;
     }
-
 }

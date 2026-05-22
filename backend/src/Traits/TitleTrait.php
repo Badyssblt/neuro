@@ -1,10 +1,16 @@
-<?php 
+<?php
+
 namespace App\Traits;
+
 use Doctrine\ORM\Mapping as ORM;
-trait TitleTrait {
+use Symfony\Component\Serializer\Attribute\Groups;
+
+trait TitleTrait
+{
     #[ORM\Column(length: 50)]
     private ?string $title = null;
 
+    #[Groups(['common'])]
     public function getTitle(): ?string
     {
         return $this->title;
@@ -16,6 +22,4 @@ trait TitleTrait {
 
         return $this;
     }
-
-
 }

@@ -12,6 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 use App\Traits\IdTrait;
 use App\Traits\TitleTrait;
 use App\Traits\UpdatedAtTrait;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: ModulesRepository::class)]
 #[ApiResource()]
@@ -27,22 +28,27 @@ class Modules
     private ?learningPath $learningPath = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['learning_path:read'])]
     private ?string $description = null;
 
     #[ORM\Column]
+    #[Groups(['learning_path:read'])]
     private ?int $position = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['learning_path:read'])]
     private ?string $difficulty = null;
 
-    #[ORM\Column(length: 100, nullable: true)]
-    private ?string $estimated_duration = null;
+    #[ORM\Column(nullable: true)]
+    #[Groups(['learning_path:read'])]
+    private ?int $estimated_duration = null;
 
 
     /**
      * @var Collection<int, Concepts>
      */
     #[ORM\OneToMany(targetEntity: Concepts::class, mappedBy: 'module', orphanRemoval: true)]
+    #[Groups(['learning_path:read'])]
     private Collection $concepts;
 
     public function __construct()
@@ -101,12 +107,12 @@ class Modules
         return $this;
     }
 
-    public function getEstimatedDuration(): ?string
+    public function getEstimatedDuration(): ?int
     {
         return $this->estimated_duration;
     }
 
-    public function setEstimatedDuration(?string $estimated_duration): static
+    public function setEstimatedDuration(?int $estimated_duration): static
     {
         $this->estimated_duration = $estimated_duration;
 

@@ -2,16 +2,18 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
 use App\Repository\LessonsRepository;
 use App\Traits\CreatedAtTrait;
-use Doctrine\DBAL\Types\Types;
-use Doctrine\ORM\Mapping as ORM;
 use App\Traits\IdTrait;
 use App\Traits\TitleTrait;
 use App\Traits\UpdatedAtTrait;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 #[ORM\Entity(repositoryClass: LessonsRepository::class)]
-#[ApiResource()]
+#[ApiResource(normalizationContext: ['groups' => ['lesson:read', 'common']])]
 class Lessons
 {
     use IdTrait;
@@ -20,16 +22,24 @@ class Lessons
     use UpdatedAtTrait;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['lesson:read'])]
     private ?string $content = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['concept:read', 'lesson:read'])]
     private ?string $summary = null;
 
     #[ORM\Column(type: Types::TEXT)]
+    #[Groups(['lesson:read'])]
     private ?string $examples = null;
 
-    #[ORM\Column(length: 50)]
-    private ?string $difficulty = null;
+    #[ORM\Column]
+    #[Groups(['concept:read', 'lesson:read'])]
+    private ?int $position = null;
+
+    #[ORM\Column(options: ['default' => false])]
+    #[Groups(['concept:read', 'lesson:read'])]
+    private bool $completed = false;
 
     #[ORM\ManyToOne(inversedBy: 'lessons')]
     private ?Concepts $concept = null;
@@ -72,14 +82,26 @@ class Lessons
         return $this;
     }
 
-    public function getDifficulty(): ?string
+    public function getPosition(): ?int
     {
-        return $this->difficulty;
+        return $this->position;
     }
 
-    public function setDifficulty(string $difficulty): static
+    public function setPosition(int $position): static
     {
-        $this->difficulty = $difficulty;
+        $this->position = $position;
+
+        return $this;
+    }
+
+    public function isCompleted(): bool
+    {
+        return $this->completed;
+    }
+
+    public function setCompleted(bool $completed): static
+    {
+        $this->completed = $completed;
 
         return $this;
     }
@@ -95,5 +117,4 @@ class Lessons
 
         return $this;
     }
-
 }

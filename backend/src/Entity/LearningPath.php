@@ -12,10 +12,11 @@ use App\Traits\IdTrait;
 use App\Traits\TitleTrait;
 use App\Traits\UpdatedAtTrait;
 use App\Traits\CreatedAtTrait;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 
 #[ORM\Entity(repositoryClass: LearningPathRepository::class)]
-#[ApiResource()]
+#[ApiResource(normalizationContext: ['groups' => ['learning_path:read', 'common']])]
 class LearningPath
 {
     use IdTrait;
@@ -28,9 +29,11 @@ class LearningPath
 
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['learning_goal:read', 'learning_path:read'])]
     private ?string $description = null;
 
     #[ORM\Column]
+    #[Groups(['learning_goal:read', 'learning_path:read'])]
     private ?int $estimated_duration = null;
 
 
@@ -38,9 +41,11 @@ class LearningPath
      * @var Collection<int, Modules>
      */
     #[ORM\OneToMany(targetEntity: Modules::class, mappedBy: 'learningPath', orphanRemoval: true)]
+    #[Groups(['learning_path:read'])]
     private Collection $modules;
 
     #[ORM\Column]
+    #[Groups(['learning_goal:read', 'learning_path:read'])]
     private ?bool $completed = null;
 
     public function __construct()

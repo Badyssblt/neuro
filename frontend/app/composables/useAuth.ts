@@ -35,7 +35,7 @@ export const useAuth = () => {
     if (result.error) return result
     token.value = result.data?.token ?? null
     console.log(token.value);
-    
+    await nextTick()
     await fetchMe()
     return result
   }

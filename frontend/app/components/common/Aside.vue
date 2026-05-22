@@ -5,7 +5,7 @@
 
         <div class="flex flex-col gap-4 mt-4">
         <div>
-            <Button variant="secondary" class="w-full justify-between"><LucidePlus/> Nouvelle intention <div class="border border-primary/20 rounded px-2"><Kbd>⌘ I</Kbd></div></Button>
+            <Button variant="secondary" class="w-full flex justify-start"><NuxtLink class="flex justify-between w-full items-center" to="/dashboard/intent"><LucidePlus/> Nouvelle intention <div class="border border-primary/20 rounded px-2"><Kbd>⌘ I</Kbd></div></NuxtLink></Button>
         </div>
         <div>
             <AsideItem to="/" :icon="LucideHouse">Accueil</AsideItem>

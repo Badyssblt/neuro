@@ -22,5 +22,4 @@ import type { LearningGoal } from '~/services/learningGoals';
 
 const goals = await useLearningGoals().list()
 
-
 </script>

@@ -1,10 +1,16 @@
-<?php 
+<?php
+
 namespace App\Traits;
+
 use Doctrine\ORM\Mapping as ORM;
-trait CreatedAtTrait {
+use Symfony\Component\Serializer\Attribute\Groups;
+
+trait CreatedAtTrait
+{
     #[ORM\Column]
     private ?\DateTimeImmutable $created_at = null;
 
+    #[Groups(['common'])]
     public function getCreatedAt(): ?\DateTimeImmutable
     {
         return $this->created_at;
@@ -16,5 +22,4 @@ trait CreatedAtTrait {
 
         return $this;
     }
-
 }

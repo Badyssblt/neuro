@@ -12,8 +12,10 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
+use Symfony\Component\Serializer\Attribute\Ignore;
 
-#[ApiResource()]
+#[ApiResource(normalizationContext: ['groups' => ['learning_goal:read', 'common']])]
 #[ORM\Entity(repositoryClass: LearningGoalRepository::class)]
 class LearningGoal
 {
@@ -23,12 +25,15 @@ class LearningGoal
     use UpdatedAtTrait;
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['learning_goal:read'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['learning_goal:read'])]
     private ?string $level = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['learning_goal:read'])]
     private ?string $status = null;
 
     #[ORM\Column]
@@ -39,12 +44,14 @@ class LearningGoal
 
     #[ORM\ManyToOne(inversedBy: 'learningGoals')]
     #[ORM\JoinColumn(nullable: false)]
+    #[Ignore]
     private ?User $learner = null;
 
     /**
      * @var Collection<int, LearningPath>
      */
     #[ORM\OneToMany(targetEntity: LearningPath::class, mappedBy: 'goal')]
+    #[Groups(['learning_goal:read'])]
     private Collection $learningPaths;
 
     public function __construct()
@@ -131,5 +138,27 @@ class LearningGoal
         }
 
         return $this;
+    }
+
+    #[Groups(['learning_goal:read'])]
+    public function getProgress(): int
+    {
+        $total = 0;
+        $done = 0;
+
+        foreach ($this->learningPaths as $path) {
+            foreach ($path->getModules() as $module) {
+                foreach ($module->getConcepts() as $concept) {
+                    foreach ($concept->getLessons() as $lesson) {
+                        $total++;
+                        if ($lesson->isCompleted()) {
+                            $done++;
+                        }
+                    }
+                }
+            }
+        }
+
+        return $total === 0 ? 0 : (int) round(($done / $total) * 100);
     }
 }

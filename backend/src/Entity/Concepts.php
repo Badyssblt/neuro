@@ -13,32 +13,41 @@ use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\DBAL\Types\Types;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Serializer\Attribute\Groups;
 
 
 #[ORM\Entity(repositoryClass: ConceptsRepository::class)]
-#[ApiResource()]
+#[ApiResource(normalizationContext: ['groups' => ['concept:read', 'common']])]
 class Concepts
 {
     use IdTrait;
     use TitleTrait;
     use CreatedAtTrait;
     use UpdatedAtTrait;
-    
+
     #[ORM\ManyToOne(inversedBy: 'concepts')]
     #[ORM\JoinColumn(nullable: false)]
     private ?Modules $module = null;
 
 
     #[ORM\Column(type: Types::TEXT, nullable: true)]
+    #[Groups(['learning_path:read', 'concept:read'])]
     private ?string $description = null;
 
     #[ORM\Column(length: 50)]
+    #[Groups(['learning_path:read', 'concept:read'])]
     private ?string $difficulty = null;
 
     #[ORM\Column]
+    #[Groups(['learning_path:read', 'concept:read'])]
+    private ?int $position = null;
+
+    #[ORM\Column]
+    #[Groups(['learning_path:read', 'concept:read'])]
     private ?int $importance_score = null;
 
     #[ORM\Column]
+    #[Groups(['learning_path:read', 'concept:read'])]
     private ?int $estimated_time = null;
 
 
@@ -50,6 +59,7 @@ class Concepts
      * @var Collection<int, Lessons>
      */
     #[ORM\OneToMany(targetEntity: Lessons::class, mappedBy: 'concept')]
+    #[Groups(['concept:read'])]
     private Collection $lessons;
 
     public function __construct()
@@ -90,6 +100,18 @@ class Concepts
     public function setDifficulty(string $difficulty): static
     {
         $this->difficulty = $difficulty;
+
+        return $this;
+    }
+
+    public function getPosition(): ?int
+    {
+        return $this->position;
+    }
+
+    public function setPosition(int $position): static
+    {
+        $this->position = $position;
 
         return $this;
     }
@@ -159,5 +181,24 @@ class Concepts
         }
 
         return $this;
+    }
+
+    #[Groups(['learning_path:read'])]
+    public function getLessonsTotal(): int
+    {
+        return $this->lessons->count();
+    }
+
+    #[Groups(['learning_path:read'])]
+    public function getLessonsCompleted(): int
+    {
+        $count = 0;
+        foreach ($this->lessons as $lesson) {
+            if ($lesson->isCompleted()) {
+                $count++;
+            }
+        }
+
+        return $count;
     }
 }

@@ -18,24 +18,26 @@ export const useApi = () => {
   })
 
   client.use({
-    onRequest({ request }) {
+    onRequest({ request }) {      
       if (token.value) request.headers.set('Authorization', `Bearer ${token.value}`)
+        
       return request
     },
     onResponse({ request, response }) {
       if (response.status !== 401) return response
-
+      console.log(response.status);
+      
       const url = new URL(request.url)
       if (PUBLIC_AUTH_PATHS.some((p) => url.pathname.startsWith(p))) {
         return response
       }
 
-      token.value = null
-      user.value = null
-
       if (import.meta.client) {
+        token.value = null
+        user.value = null
         navigateTo('/login')
       }
+    
       return response
     },
   })
